@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: kocaeli-sehir-yonetim
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/sehir}
+    username: ${DB_USER:sehir}
+    password: ${DB_PASSWORD:sehir_dev_password}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc.time_zone: UTC
+        format_sql: false
+  flyway:
+    enabled: true
+    connect-retries: 20
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+server:
+  error:
+    include-message: never
+  forward-headers-strategy: framework
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: when_authorized
+app:
+  auth:
+    mock-enabled: ${MOCK_AUTH_ENABLED:true}
+    jwt-secret: ${JWT_SECRET:change-this-development-secret-to-at-least-32-characters}
+    access-minutes: 30
+    refresh-days: 7
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  inspection:
+    minimum-photo-count: 1
+  storage:
+    endpoint: ${S3_ENDPOINT:http://localhost:9000}
+    access-key: ${S3_ACCESS_KEY:minioadmin}
+    secret-key: ${S3_SECRET_KEY:minioadmin123}
+    bucket: ${S3_BUCKET:sehir-documents}
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

@@ -1,0 +1,3 @@
+package tr.gov.kocaeli.sehir.common.config;
+import jakarta.servlet.*; import jakarta.servlet.http.*; import org.slf4j.MDC; import org.springframework.stereotype.Component; import org.springframework.web.filter.OncePerRequestFilter; import java.io.IOException; import java.util.*;
+@Component public class TraceFilter extends OncePerRequestFilter { @Override protected void doFilterInternal(HttpServletRequest req,HttpServletResponse res,FilterChain chain)throws ServletException,IOException{String trace=java.util.Optional.ofNullable(req.getHeader("X-Trace-Id")).filter(v->v.matches("[A-Za-z0-9-]{1,64}")).orElse(UUID.randomUUID().toString());MDC.put("traceId",trace);res.setHeader("X-Trace-Id",trace);try{chain.doFilter(req,res);}finally{MDC.remove("traceId");}} }

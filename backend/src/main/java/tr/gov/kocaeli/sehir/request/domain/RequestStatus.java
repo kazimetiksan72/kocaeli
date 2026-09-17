@@ -1,0 +1,11 @@
+package tr.gov.kocaeli.sehir.request.domain;
+import java.util.*;
+public enum RequestStatus{
+ DRAFT,NEW,PRE_REVIEW,ASSIGNED,FIELD_REVIEW,DECISION_PENDING,CONVERTED_TO_PROJECT,CONVERTED_TO_ACTIVITY,REJECTED,DUPLICATE_CLOSED;
+ private static final Map<RequestStatus,Set<RequestStatus>> ALLOWED=Map.of(
+  DRAFT,Set.of(NEW),NEW,Set.of(PRE_REVIEW,REJECTED,DUPLICATE_CLOSED),PRE_REVIEW,Set.of(ASSIGNED,REJECTED,DUPLICATE_CLOSED),
+  ASSIGNED,Set.of(FIELD_REVIEW,PRE_REVIEW),FIELD_REVIEW,Set.of(DECISION_PENDING,ASSIGNED),
+  DECISION_PENDING,Set.of(CONVERTED_TO_PROJECT,CONVERTED_TO_ACTIVITY,FIELD_REVIEW,REJECTED));
+ public boolean canTransitionTo(RequestStatus next){return ALLOWED.getOrDefault(this,Set.of()).contains(next);}
+}
+

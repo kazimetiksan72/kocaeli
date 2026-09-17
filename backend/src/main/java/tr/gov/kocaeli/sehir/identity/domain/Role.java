@@ -1,0 +1,4 @@
+package tr.gov.kocaeli.sehir.identity.domain;
+
+public enum Role { SYSTEM_ADMIN, UNIT_MANAGER, REQUEST_OPERATOR, TECHNICAL_REVIEWER, FIELD_PERSONNEL, PROJECT_RESPONSIBLE, APPROVER, VIEWER }
+

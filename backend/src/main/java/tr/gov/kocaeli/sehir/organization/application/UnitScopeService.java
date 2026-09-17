@@ -1,0 +1,4 @@
+package tr.gov.kocaeli.sehir.organization.application;
+import tr.gov.kocaeli.sehir.common.security.*; import tr.gov.kocaeli.sehir.organization.domain.*; import org.springframework.stereotype.Service; import java.util.*;
+@Service public class UnitScopeService {private final CurrentUserService current;private final OrgUnitRepository units;public UnitScopeService(CurrentUserService current,OrgUnitRepository units){this.current=current;this.units=units;}public Set<UUID> allowedUnits(){var u=current.require();return u.isAdmin()?new HashSet<>(units.findAll().stream().map(OrgUnit::getId).toList()):units.descendants(u.unitId());}public void require(UUID unit){if(!allowedUnits().contains(unit))throw new tr.gov.kocaeli.sehir.common.api.ApiException(org.springframework.http.HttpStatus.FORBIDDEN,"UNIT_ACCESS_DENIED","Bu birimin kaydına erişim yetkiniz yok");}}
+
